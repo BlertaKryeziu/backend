@@ -5,7 +5,8 @@ const pool = require("../config/db");
 // =============== REGISTER ===============
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password} = req.body;
+    const role = req.body.role.toLowerCase();
     console.log("Request Data:", req.body);
 
     if (!name || !email || !password || !role) {
