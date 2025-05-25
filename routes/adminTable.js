@@ -1,19 +1,18 @@
 const express = require("express");
 const pool = require("../config/db");
-const authMiddleware = require("../middleware/authMiddleware");
+//const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 //create table
-router.post("/create", authMiddleware, async (req, res) => {
+
+router.post("/create",  async (req, res) => {
 
     const { number, status, room_id } = req.body;
 
 
     try {
-        if (req.user.status !== "admin"){
-            return res.status(403).json({message: "Admins only." });
-        }
+    
 
         const result = await pool.query(
             `INSERT INTO adminTable (number, status, room_id)
@@ -28,14 +27,14 @@ router.post("/create", authMiddleware, async (req, res) => {
 });
 
 //update
-router.put("/update/:id", authMiddleware, async (req, res) => {
-    const { id } = req.params;
+router.put("/update/:editTableId", async (req, res) => {
+    const { editTableId } = req.params;
     const {number, status, room_id} = req.body;
 
     try {
         const result = await pool.query(
             `UPDATE adminTable SET number = $1, status = $2, room_id = $3 WHERE id = $4 RETURNING *`,
-            [number, status, room_id, id]
+            [number, status, room_id, editTableId]
         );
 
         if(result.rowCount === 0){
@@ -48,13 +47,13 @@ router.put("/update/:id", authMiddleware, async (req, res) => {
 });
 
 //GET
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/",  async (req, res) => {
   const result = await pool.query("SELECT * FROM adminTable ORDER BY id");
   res.json(result.rows);
 });
 
 //delete
-router.delete("/delete/:id", authMiddleware, async (req, res) => {
+router.delete("/delete/:id",  async (req, res) => {
     const { id } = req.params;
 
     try {

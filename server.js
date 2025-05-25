@@ -23,7 +23,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/tables', tableRoutes);
 
 app.use('/api/adminTable', adminTable);
-app.use('api/adminFoods', adminFoods);
+app.use('/api/adminFoods', adminFoods);
 
 
 // Test endpoint
