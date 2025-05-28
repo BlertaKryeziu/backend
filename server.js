@@ -15,7 +15,7 @@ const tableRoutes = require('./routes/tableRoutes');
 
 const adminTable = require("./routes/adminTable");
 
-const adminFoods = require("./routes/adminFoods");
+const adminProducts = require("./routes/adminProducts");
 
 // perdorimi i rrugve 
 app.use('/api/auth', authRoutes);
@@ -23,7 +23,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/tables', tableRoutes);
 
 app.use('/api/adminTable', adminTable);
-app.use('/api/adminFoods', adminFoods);
+app.use('/api/adminProducts', adminProducts);
 
 
 // Test endpoint
