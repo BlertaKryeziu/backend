@@ -16,6 +16,7 @@ const tableRoutes = require('./routes/tableRoutes');
 const adminTable = require("./routes/adminTable");
 
 const adminProducts = require("./routes/adminProducts");
+const adminMenagament = require("./routes/adminMenagament");
 
 // perdorimi i rrugve 
 app.use('/api/auth', authRoutes);
@@ -24,6 +25,7 @@ app.use('/api/tables', tableRoutes);
 
 app.use('/api/adminTable', adminTable);
 app.use('/api/adminProducts', adminProducts);
+app.use('/api/adminMenagament', adminMenagament);
 
 
 // Test endpoint

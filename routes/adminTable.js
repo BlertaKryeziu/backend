@@ -7,14 +7,11 @@ const router = express.Router();
 //create table
 
 router.post("/create",  async (req, res) => {
-
-    const { number, status, room_id } = req.body;
+  const { number, status, room_id } = req.body;
 
 
     try {
-    
-
-        const result = await pool.query(
+      const result = await pool.query(
             `INSERT INTO adminTable (number, status, room_id)
             VALUES ($1, $2, $3) RETURNING * `,
             [number, status || "available", room_id || null]
