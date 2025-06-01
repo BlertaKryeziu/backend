@@ -7,14 +7,14 @@ const router = express.Router();
 //create table
 
 router.post("/create",  async (req, res) => {
-  const { number, status, room_id } = req.body;
+  const { number, status, room } = req.body;
 
 
     try {
       const result = await pool.query(
-            `INSERT INTO adminTable (number, status, room_id)
+            `INSERT INTO adminTable (number, status, room)
             VALUES ($1, $2, $3) RETURNING * `,
-            [number, status || "available", room_id || null]
+            [number, status || "available", room || null]
         );
 
         res.status(201).json(result.rows[0]);
@@ -26,12 +26,12 @@ router.post("/create",  async (req, res) => {
 //update
 router.put("/update/:editTableId", async (req, res) => {
     const { editTableId } = req.params;
-    const {number, status, room_id} = req.body;
+    const {number, status, room} = req.body;
 
     try {
         const result = await pool.query(
-            `UPDATE adminTable SET number = $1, status = $2, room_id = $3 WHERE id = $4 RETURNING *`,
-            [number, status, room_id, editTableId]
+            `UPDATE adminTable SET number = $1, status = $2, room = $3 WHERE id = $4 RETURNING *`,
+            [number, status, room, editTableId]
         );
 
         if(result.rowCount === 0){

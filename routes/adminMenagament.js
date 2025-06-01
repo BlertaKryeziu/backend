@@ -5,7 +5,7 @@ const router = express.Router();
 //Get all waiters
 router.get("/", async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM waiters ORDER BY id");
+        const result = await pool.query("SELECT * FROM usersrestaurant WHERE role = 'waiter' ORDER BY id" );
         res.json(result.rows);
     } catch (error) {
         console.log("Ka ndodhur nje gabim:" , error);
@@ -16,6 +16,8 @@ router.get("/", async (req, res) => {
 
 //Create a new waiter
 router.post("/create", async (req, res) => {
+      console.log("POST /create body:", req.body); // Kjo të ndihmon të shohësh çfarë po të vjen
+
     const {name, email, password} = req.body;
 
     if(!name || !email || !password) {
@@ -24,7 +26,7 @@ router.post("/create", async (req, res) => {
 
     try {
         const result = await pool.query(
-            " INSERT INTO waiters (name, email, password) VALUES ($1, $2, $3) RETURNING *",
+            " INSERT INTO usersrestaurant (name, email, password, role) VALUES ($1, $2, $3, 'waiter') RETURNING *",
             [name, email, password]
         );
         res.status(201).json(result.rows[0]);
@@ -37,17 +39,17 @@ router.post("/create", async (req, res) => {
 //update
 router.put("/update/:id", async (req, res) => {
     const { id } = req.params;
-    const {name, email, password} = req.body;
+    const {name, email, password, role} = req.body;
 
-    if(!name || !email || !password) {
+    if(!name || !email || !password ) {
         return res.status(400).json({error: "Te gjitha fushat te plotesohen."});
     }
 
     try {
         const result = await pool.query(
-            "UPDATE waiters SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *",
-            [name, email, password, id]
-        );
+  "UPDATE usersrestaurant SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *",
+  [name, email, password, id]
+);
 
         if(result.rowCount === 0) {
             return res.status(404).json({Message: "Kamarieri nuk u gjet. "});
@@ -65,7 +67,7 @@ router.delete("/delete/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
-        const result = await pool.query("DELETE FROM waiters WHERE id=$1", [id]);
+        const result = await pool.query(  "DELETE FROM usersrestaurant WHERE id = $1 AND role = 'waiter'", [id]);
 
         if(result.rowCount === 0){
             return res.status(404).json({message: "Kamarieri nuk u gjet "});
